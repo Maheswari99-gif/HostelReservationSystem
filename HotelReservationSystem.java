@@ -60,7 +60,7 @@ public class HotelReservationSystem {
 	 */
 	//usecase12,11//
 
-	private void getCheapestHotel() {
+	private void getCheapestbestRatedHotelOrbestRated() {
 		// String DayOfWeek;
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MM yyyy");
 		LOG.info("Enter start date (dd MM yyyy): ");
@@ -132,6 +132,6 @@ public class HotelReservationSystem {
 		hotelReservation.addHotel("Bridgewood", 150, 50, 110, 50, 4);
 		hotelReservation.addHotel("Ridgewood", 220, 150, 100, 40, 5);
 		hotelReservation.hotelList.forEach(n -> LOG.info(n));
-		hotelReservation.getCheapestHotel();
+		hotelReservation.getCheapestbestRatedHotelOrbestRated();
 	}
 }
