@@ -58,6 +58,7 @@ public class HotelReservationSystem {
 	/**
 	 * 
 	 */
+	//usecase12,11//
 
 	private void getCheapestHotel() {
 		// String DayOfWeek;
@@ -119,6 +120,10 @@ public class HotelReservationSystem {
 		}
 
 	}
+	/**
+	 * 
+	 * @param args
+	 */
 
 	public static void main(String[] args) {
 		HotelReservationSystem hotelReservation = new HotelReservationSystem();
