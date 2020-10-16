@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.time.*;
 import java.time.temporal.*;
 import org.apache.logging.log4j.LogManager;
@@ -26,6 +27,7 @@ public class HotelReservationSystem {
 
 //usecase1//
 	// usecase3//
+	// usecase5//
 	/**
 	 * 
 	 */
@@ -53,7 +55,7 @@ public class HotelReservationSystem {
 	 */
 
 	private void getCheapestHotel() {
-		String DayOfWeek;
+		// String DayOfWeek;
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MM yyyy");
 		LOG.info("Enter start date (dd MM yyyy): ");
 		String startDateInput = input.nextLine();
@@ -74,9 +76,20 @@ public class HotelReservationSystem {
 			hotel.setTotalRate(totalRate);
 			LOG.info("Total Rate=" + totalRate);
 		}
-		Hotel cheapestHotel = hotelList.stream().sorted(Comparator.comparing(Hotel::getTotalRate)).findFirst()
-				.orElse(null);
-		LOG.info(cheapestHotel.getname() + ", Total rates :$" + cheapestHotel.getTotalRate());
+		List<Hotel> sortedList = hotelList.stream().sorted(Comparator.comparing(Hotel::getTotalRate))
+				.collect(Collectors.toList());
+
+		Hotel cheapestHotel = sortedList.get(0);
+		long cheapestRate = sortedList.get(0).getTotalRate();
+		for (Hotel hotel : sortedList) {
+			if (hotel.getTotalRate() <= cheapestRate) {
+				if (hotel.getRating() > cheapestHotel.getRating())
+					cheapestHotel = hotel;
+			} else
+				break;
+		}
+		LOG.info(cheapestHotel.getname() + ", Total rates : $" + cheapestHotel.getTotalRate() + " With Rating : "
+				+ cheapestHotel.getRating());
 
 	}
 
