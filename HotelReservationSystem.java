@@ -128,7 +128,9 @@ public class HotelReservationSystem {
 	public static void main(String[] args) {
 		HotelReservationSystem hotelReservation = new HotelReservationSystem();
 		LOG.info("Welcome to Hotel Reservation Program");
-		hotelReservation.addHotels();
+		hotelReservation.addHotel("Lakewood", 110, 90, 80, 80, 3);
+		hotelReservation.addHotel("Bridgewood", 150, 50, 110, 50, 4);
+		hotelReservation.addHotel("Ridgewood", 220, 150, 100, 40, 5);
 		hotelReservation.hotelList.forEach(n -> LOG.info(n));
 		hotelReservation.getCheapestHotel();
 	}
