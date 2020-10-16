@@ -38,7 +38,7 @@ public class HotelReservationSystem {
 			LOG.info("Enter the name of hotel");
 			String name = input.nextLine();
 			LOG.info("Enter the rating");
-			int rating = input.nextInt();
+			int rating = Integer.parseInt(input.nextLine());
 			LOG.info("Enter the weekday regular rate");
 			int weekdayRegularRate = Integer.parseInt(input.nextLine());
 			LOG.info("Enter the weeekend regular rate");
@@ -76,20 +76,31 @@ public class HotelReservationSystem {
 			hotel.setTotalRate(totalRate);
 			LOG.info("Total Rate=" + totalRate);
 		}
-		List<Hotel> sortedList = hotelList.stream().sorted(Comparator.comparing(Hotel::getTotalRate))
-				.collect(Collectors.toList());
+		System.out.println("\n1.Find cheapest best rated hotel\n2.Find best rated hotel\nEnter your choice 1 or 2 : ");
+		int option = Integer.parseInt(input.nextLine());
+		if (option == 1) {
+			List<Hotel> sortedList = hotelList.stream().sorted(Comparator.comparing(Hotel::getTotalRate))
+					.collect(Collectors.toList());
 
-		Hotel cheapestHotel = sortedList.get(0);
-		long cheapestRate = sortedList.get(0).getTotalRate();
-		for (Hotel hotel : sortedList) {
-			if (hotel.getTotalRate() <= cheapestRate) {
-				if (hotel.getRating() > cheapestHotel.getRating())
-					cheapestHotel = hotel;
-			} else
-				break;
+			Hotel cheapestHotel = sortedList.get(0);
+			long cheapestRate = sortedList.get(0).getTotalRate();
+			for (Hotel hotel : sortedList) {
+				if (hotel.getTotalRate() <= cheapestRate) {
+					if (hotel.getRating() > cheapestHotel.getRating())
+						cheapestHotel = hotel;
+				} else
+					break;
+			}
+			LOG.info(cheapestHotel.getname() + ", Total rates : $" + cheapestHotel.getTotalRate() + " With Rating : "
+					+ cheapestHotel.getRating());
+		} else {
+			List<Hotel> sortedList = hotelList.stream().sorted(Comparator.comparing(Hotel::getRating).reversed())
+					.collect(Collectors.toList());
+			Hotel bestRatedHotel = sortedList.get(0);
+			long bestRate = sortedList.get(0).getRating();
+			LOG.info(bestRatedHotel.getname() + " With Rating : " + bestRatedHotel.getRating());
+
 		}
-		LOG.info(cheapestHotel.getname() + ", Total rates : $" + cheapestHotel.getTotalRate() + " With Rating : "
-				+ cheapestHotel.getRating());
 
 	}
 
