@@ -1,12 +1,16 @@
 package com.capgemini.hotelreservation;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.time.*;
+import java.time.temporal.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,6 +25,7 @@ public class HotelReservationSystem {
 	private static List<Hotel> hotelList = new ArrayList<>();
 
 //usecase1//
+	// usecase3//
 	/**
 	 * 
 	 */
@@ -45,7 +50,8 @@ public class HotelReservationSystem {
 	 * 
 	 */
 
-	private static void getCheapestHotel() {
+	private void getCheapestHotel() {
+		String DayOfWeek;
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MM yyyy");
 		LOG.info("Enter start date (dd MM yyyy): ");
 		String startDateInput = input.nextLine();
@@ -54,14 +60,22 @@ public class HotelReservationSystem {
 		LocalDate startDate = LocalDate.parse(startDateInput, dateFormat);
 		LocalDate endDate = LocalDate.parse(endDateInput, dateFormat);
 		int noOfDaysBetween = (int) ChronoUnit.DAYS.between(startDate, endDate);
-		int minCost = hotelList.get(0).weekdayRegularRate;
-		String cheapestHotelName = hotelList.get(0).name;
-		for (int i = 1; i < hotelList.size(); i++)
-			if (hotelList.get(i).weekdayRegularRate < minCost) {
-				minCost = hotelList.get(i).weekdayRegularRate;
-				cheapestHotelName = hotelList.get(i).name;
-			}
-		LOG.info(cheapestHotelName + ", Total Cost : " + minCost * noOfDaysBetween);
+		DayOfWeek startW = startDate.getDayOfWeek();
+		DayOfWeek endW = endDate.getDayOfWeek();
+		long daysWithoutWeekends = noOfDaysBetween - 2 * ((noOfDaysBetween + startW.getValue()) / 7);
+		long calcWeekDays = daysWithoutWeekends + (startW.getValue() == 1 ? 1 : 0) + (endW.getValue() == 1 ? 1 : 0);
+		long calcWeekends = noOfDaysBetween - (calcWeekDays);
+		LOG.info("NoOfWeekdays" + calcWeekDays + "NoOfWeekends" + calcWeekends);
+		for (Hotel hotel : hotelList) {
+			long totalRate = calcWeekDays * hotel.getWeekdayRegularRate()
+					+ calcWeekDays * hotel.getWeekendRegularRate();
+			hotel.setTotalRate(totalRate);
+			LOG.info("Total Rate=" + totalRate);
+		}
+		Hotel cheapestHotel = hotelList.stream().sorted(Comparator.comparing(Hotel::getTotalRate)).findFirst()
+				.orElse(null);
+		LOG.info(cheapestHotel.getname() + ", Total rates :$" + cheapestHotel.getTotalRate());
+
 	}
 
 	public static void main(String[] args) {
