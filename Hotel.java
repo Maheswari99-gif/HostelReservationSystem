@@ -2,18 +2,19 @@ package com.capgemini.hotelreservation;
 
 public class Hotel {
 	public String name;
-	public int regularRate;
-	
-	
-	public Hotel(String name, int regularRate) {
+	public int weekdayRegularRate;
+	public int weekendRegularRate;
+
+	public Hotel(String name, int weekdayRegularRate, int weekendRegularRate) {
 		super();
 		this.name = name;
-		this.regularRate = regularRate;
+		this.weekdayRegularRate = weekdayRegularRate;
+		this.weekendRegularRate = weekendRegularRate;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "\nHotel \n[ Name=  " + name + "\nRegular Rate=  $" + regularRate + " ]";
+		return "\nHotelName=  " + name + "\nWeekdayRate =  $" + weekdayRegularRate + "\nWeekendRate = $" + weekendRegularRate;
 	}
 
 }
